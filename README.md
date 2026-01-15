@@ -1,6 +1,6 @@
 # Claude Code Config (macOS) 🚀
 
-A sophisticated, production-ready configuration for the Claude Code CLI. This setup transforms Claude from a chat interface into a high-speed engine for precision research, desktop automation, and knowledge management.
+Configuration template for the Claude Code. This setup transforms Claude from a coding agent to full-desktop operation agent, it will be able to spawm more agents at the same time via swarm_mode, create a mini-wiki for you via the skill research, run your applications as yourself via the desktop automation, and manage its own memory via memory_palace.
 
 ## ✨ Key Features
 
@@ -20,8 +20,8 @@ A sophisticated, production-ready configuration for the Claude Code CLI. This se
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/claude-code-config.git
-   cd claude-code-config
+   git clone https://github.com/luislozanogmia/agentic_os.git
+   cd agentic_os
    ```
 
 2. **Run the installer**:
