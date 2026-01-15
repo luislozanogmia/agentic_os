@@ -1,6 +1,9 @@
-# Claude Code Config (macOS) 🚀
+# Agentic OS a.k.a. Claude Code Config (macOS) 🚀
 
 Configuration template for the Claude Code. This setup transforms Claude from a coding agent to full-desktop operation agent, it will be able to spawm more agents at the same time via swarm_mode, create a mini-wiki for you via the skill research, run your applications as yourself via the desktop automation, and manage its own memory via memory_palace.
+
+## 🤔 Not using MacOS?
+Ask Claude to create adapters for Windows or Linux for the skills. Since most of the skills are python Claude will just edit the names of the process to gather info from, should take 20-30min. For Windows I tested it and took 20 min, I don't have Linux to test.
 
 ## ✨ Key Features
 
