@@ -13,15 +13,15 @@
 3. Copy your API key (starts with `sk_`)
 
 ### 3. Create `.env` File
-Copy the template and add your key:
+Create a `.env` file in your project directory with:
 
-```bash
-cp ~/.env.template ~/.env
-```
-
-Then edit `~/.env` and replace:
 ```
 ELEVENLABS_API_KEY=sk_your_actual_key_here
+```
+
+Or set as environment variable:
+```bash
+export ELEVENLABS_API_KEY=sk_your_actual_key_here
 ```
 
 ### 4. Install Python Dependencies
@@ -31,10 +31,10 @@ pip install requests python-dotenv
 
 ### 5. Test It
 ```bash
-python3 ~/.claude/skills/voice-conversation/voice_handler.py --speak "Let me help you build that for you"
+python3 voice_handler.py --speak "Let me help you build that for you"
 ```
 
-If ElevenLabs key is configured, it will use that. Otherwise falls back to macOS `say`.
+If ElevenLabs key is configured, it will use that. Otherwise falls back to native OS text-to-speech.
 
 ## Voice Selection
 
@@ -79,17 +79,17 @@ If ElevenLabs key is configured, it will use that. Otherwise falls back to macOS
 
 2. **Test a specific voice:**
    ```bash
-   python3 ~/.claude/skills/voice-conversation/voice_handler.py --speak "Let me help you build that for you" --voice-id VOICE_ID_HERE
+   python3 voice_handler.py --speak "Let me help you build that for you" --voice-id VOICE_ID_HERE
    ```
 
-3. **Or stick with macOS voices** (free, no credits used):
+3. **Or stick with native OS voices** (free, no credits used):
    ```bash
-   python3 ~/.claude/skills/voice-conversation/voice_handler.py --speak "Test text" --use-macos
+   python3 voice_handler.py --speak "Test text" --use-macos
    ```
 
 ## Fallback Behavior
 
-If ElevenLabs API is down or you run out of credits, the system automatically falls back to macOS native `say` command. No crashes, no interruptions.
+If ElevenLabs API is down or you run out of credits, the system automatically falls back to native OS text-to-speech. No crashes, no interruptions.
 
 ## Credit Estimation
 
@@ -110,14 +110,18 @@ For production use, the $5/month plan gives 100,000 characters/month, which is p
 
 ## Environment Variables
 
-Store in `~/.env` (not committed to git):
+Store in your `.env` file (not committed to git):
 
 ```
 # Required for ElevenLabs
 ELEVENLABS_API_KEY=sk_xxx_your_key_xxx
 
-# Optional
-ELEVENLABS_VOICE_ID=EXAVITQu4vr4xnSDxMaL  # Default: Bella
+# Optional - Set agent-specific voice ID
+ELEVENLABS_VOICE_ID=your_voice_id_here
 ```
 
-See `~/.env.template` for full template with voice IDs.
+Or export directly:
+```bash
+export ELEVENLABS_API_KEY=sk_xxx_your_key_xxx
+export ELEVENLABS_VOICE_ID=your_voice_id_here
+```
