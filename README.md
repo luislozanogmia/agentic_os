@@ -7,7 +7,8 @@ Ask Claude to create adapters for Windows or Linux for the skills. Since most of
 
 ## ✨ Key Features
 
-- **6 Core Skills**: Includes UI automation (`ax-executor`), browser control (`chrome-control`), and swarm orchestration.
+- **7 Core Skills**: UI automation (`ax-executor`), browser control (`chrome-control`), voice communication (`voice-conversation`), swarm orchestration, and more.
+- **Multi-Modal Interaction**: Voice-first workflow with audio summaries + text responses for natural agent communication.
 - **Agentic Workflow**: Implements the "Two Worlds" principle—AI-native operations first, UI only when necessary.
 - **Knowledge Systems**: Integrated `memory_palace` and `world_knowledge` templates for persistent, long-term memory.
 - **Safety First**: Non-negotiable "NO DESTRUCTIVE ACTIONS" rule baked into the system prompt.
@@ -41,7 +42,13 @@ Ask Claude to create adapters for Windows or Linux for the skills. Since most of
 ## 📂 Repository Structure
 
 - `config/`: Templates for `CLAUDE.md` and `SKILL.md`.
-- `skills/`: Individual skill modules (AX, Chrome, RAG, Swarm, etc.).
+- `skills/`: Individual skill modules:
+  - `ax-executor`: Desktop UI automation via Accessibility framework
+  - `chrome-control`: Browser control and navigation
+  - `voice-conversation`: Multi-agent voice communication (TTS/STT)
+  - `context-rag`: Knowledge retrieval system
+  - `swarm_skill`: Agent orchestration
+  - And more...
 - `scripts/`: Core Python utilities for context compression and search.
 - `knowledge/`: Templates for building your own persistent memory system.
 - `docs/`: Detailed guides for each skill and architectural principle.
