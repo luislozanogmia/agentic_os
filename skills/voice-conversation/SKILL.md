@@ -30,58 +30,58 @@ pip install pyttsx3
 
 ### Record Audio
 ```bash
-python3 ~/.claude/skills/voice-conversation/voice_handler.py --record --duration 10
+python3 voice_handler.py --record --duration 10
 ```
-Records 10 seconds of audio, saves to `~/.agent-shared/voice/audio/`
+Records 10 seconds of audio, saves to your configured audio directory.
 
 ### Transcribe Audio
 ```bash
-python3 ~/.claude/skills/voice-conversation/voice_handler.py --transcribe ~/path/to/audio.wav --model base
+python3 voice_handler.py --transcribe path/to/audio.wav --model base
 ```
 Models: `tiny`, `base`, `small`, `medium`, `large`
 - Larger = more accurate but slower
-- Start with `base` for M2 Mac
+- Start with `base` for optimal balance
 
 ### Text-to-Speech
 ```bash
-python3 ~/.claude/skills/voice-conversation/voice_handler.py --speak "Hello, how can I help you?"
+python3 voice_handler.py --speak "Hello, how can I help you?"
 ```
-Generates speech and saves to `~/.agent-shared/voice/audio/`
+Generates speech and saves to your configured audio directory.
 
 ### Play Audio
 ```bash
-python3 ~/.claude/skills/voice-conversation/voice_handler.py --play ~/path/to/audio.wav
+python3 voice_handler.py --play path/to/audio.wav
 ```
-Uses native macOS `afplay`
+Uses native audio playback (`afplay` on macOS).
 
 ### Full Cycle (Record → Transcribe)
 ```bash
-python3 ~/.claude/skills/voice-conversation/voice_handler.py --cycle --duration 5
+python3 voice_handler.py --cycle --duration 5
 ```
 
 ## Shared Storage
 
-**Audio files**: `~/.agent-shared/voice/audio/`
+**Audio files**: Configured in environment or defaults to system audio directory
 - Format: `audio_<unix_timestamp>.wav` or `tts_<unix_timestamp>.wav`
 
-**Transcripts**: `~/.agent-shared/voice/latest_transcript.json`
+**Transcripts**: Latest transcript stored as JSON
 ```json
 {
   "timestamp": "2026-01-20T21:45:30.123456",
-  "audio_file": "/Users/LAAgencia/.agent-shared/voice/audio/audio_1705800330.wav",
-  "text": "Hey Claude, what time is it?",
+  "audio_file": "path/to/audio_1705800330.wav",
+  "text": "User's spoken message",
   "model": "base",
   "language": "en"
 }
 ```
 
-**Responses**: `~/.agent-shared/voice/latest_response.json`
+**Responses**: Latest response stored as JSON
 ```json
 {
   "timestamp": "2026-01-20T21:45:35.123456",
-  "text": "It's 9:45 PM",
-  "output_file": "/Users/LAAgencia/.agent-shared/voice/audio/tts_1705800335.wav",
-  "method": "macOS-say"
+  "text": "Agent's text response",
+  "output_file": "path/to/tts_1705800335.wav",
+  "method": "audio-synthesis-backend"
 }
 ```
 
@@ -94,11 +94,11 @@ Each agent has a distinct, personality-matched voice:
 - Tone: Deep, warm, professional
 - Use: `ELEVENLABS_VOICE_ID="ZoiZ8fuDWInAcwPXaVeq" python3 voice_handler.py --speak "..."`
 
-**Mia (Charlotte)**
-- Voice ID: `XB0fDUnXU5powFXDhCwa`
-- Tone: Cool, monotone, efficient
-- Aesthetic: 2B-like (NieR Automata) — professional, detached
-- Use: `ELEVENLABS_VOICE_ID="XB0fDUnXU5powFXDhCwa" python3 voice_handler.py --speak "..."`
+**Mia (ChatGPT)**
+- Backend: OpenAI ChatGPT API
+- Tone: Precise, structured, analytical
+- Role: Validation-first reasoning with mirror reflection
+- Use: ChatGPT integration via API (configure OPENAI_API_KEY in environment)
 
 **Gemini (Analytical)**
 - Voice ID: `EGPLqH9Wz2tNLu58EJVR`
@@ -125,12 +125,12 @@ Each agent has a distinct, personality-matched voice:
 
 **Example flow:**
 ```bash
-# Agent hears request → fires audio summary immediately
-ELEVENLABS_VOICE_ID="ZoiZ8fuDWInAcwPXaVeq" \
+# Agent receives request → fires audio summary immediately
+export VOICE_ID="your_voice_id_here"  # Set agent-specific voice ID
 python3 voice_handler.py --speak "I'll analyze that. One moment."
 
 # While audio plays, full response lands in text
-echo "Here's the detailed analysis you requested..."
+# Full detailed analysis sent to console/chat output
 ```
 
 ## How Agents Use It
@@ -144,12 +144,12 @@ echo "Here's the detailed analysis you requested..."
 
 This ensures immediate vocal presence while text reasoning completes in parallel.
 
-## M2 Mac Optimization
+## Cross-Platform Optimization
 
-- Uses native macOS frameworks (`AVFoundation`, `say`, `afplay`)
-- CPU-only for Whisper (avoids Metal/CUDA complexity on first pass)
+- Uses native OS audio frameworks where available
+- CPU-efficient transcription via Whisper (optional GPU acceleration)
 - Low latency: record → transcribe → respond in < 30 seconds
-- No external dependencies beyond brew/pip
+- Minimal external dependencies (pip/environment-based)
 
 ## Next Steps
 
