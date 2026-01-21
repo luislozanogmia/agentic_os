@@ -109,29 +109,69 @@ Each agent has a distinct, personality-matched voice:
 
 **Recommended approach for agent responses in multi-modal sessions:**
 
-1. **Fire audio summary first** (1-2 lines concisely via voice_handler.py)
-   - User hears immediate vocal confirmation
-   - No waiting for reasoning to complete
+### The Pattern: Voice Command → Page Break → Normal Text
 
-2. **Send full text response** in parallel
-   - Detailed explanation lands while audio plays
-   - User can read or listen, both available simultaneously
+1. **Voice Command** (1-2 lines, fires immediately)
+   ```bash
+   ELEVENLABS_VOICE_ID="ZoiZ8fuDWInAcwPXaVeq" python3 voice_handler.py --speak "I'll help with that. One moment."
+   ```
+   - Audio plays right away
+   - User hears agent presence immediately
 
-3. **Benefits:**
-   - Immediate presence confirmed via voice
-   - Audio is never forgotten (fires first, not last)
-   - Text and audio flow together naturally
-   - Works consistently across all three agents
+2. **Page Break** (visual separation)
+   - Signals transition from voice to text
+   - Gives user time to listen while reading begins
 
-**Example flow:**
-```bash
-# Agent receives request → fires audio summary immediately
-export VOICE_ID="your_voice_id_here"  # Set agent-specific voice ID
-python3 voice_handler.py --speak "I'll analyze that. One moment."
+3. **Normal Text Response** (full detailed answer)
+   - Complete reasoning and explanation
+   - Arrives while or after audio completes
+   - User has full context in text form
 
-# While audio plays, full response lands in text
-# Full detailed analysis sent to console/chat output
+### Example: Mia Agent (ChatGPT)
 ```
+ELEVENLABS_VOICE_ID="XB0fDUnXU5powFXDhCwa" python3 voice_handler.py --speak "Validating your request. Structure looks correct."
+
+---
+
+**Full Response:**
+Your request has been validated against the following criteria:
+- API keys configured correctly
+- Voice IDs match expected format
+- Audio fallback ready if ElevenLabs unavailable
+
+Proceeding with implementation.
+```
+
+### Example: Claude Agent (Analytical)
+```
+ELEVENLABS_VOICE_ID="ZoiZ8fuDWInAcwPXaVeq" python3 voice_handler.py --speak "I found three approaches. The first is optimal."
+
+---
+
+**Full Response:**
+After analyzing your requirements, here are the options:
+
+1. **Recommended**: Direct API integration
+   - Pros: Minimal latency, full control
+   - Cons: Requires manual token management
+
+2. Alternative: Wrapper library approach
+   - Pros: Abstraction, easier debugging
+   - Cons: Extra layer of indirection
+
+3. Fallback: Shell script wrapper
+   - Pros: No dependencies
+   - Cons: Limited error handling
+
+I recommend option 1 based on your performance requirements.
+```
+
+### Benefits
+- **Immediate presence** — User hears agent within 1 second
+- **Never forgotten** — Audio fires first, not added as afterthought
+- **Natural flow** — Voice + text arrive together, complementary
+- **Works for all agents** — Claude, Mia, Gemini all follow same pattern
+- **Respects user attention** — Short audio summary, full text for deep reading
 
 ## How Agents Use It
 
