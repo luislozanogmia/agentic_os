@@ -7,7 +7,7 @@ Ask Claude to create adapters for Windows or Linux for the skills. Since most of
 
 ## ✨ Key Features
 
-- **7 Core Skills**: UI automation (`ax-executor`), browser control (`chrome-control`), voice communication (`voice-conversation`), swarm orchestration, and more.
+- **8 Core Skills**: UI automation (`ax-executor`), browser control (`chrome-control`), voice communication (`voice-conversation`), local Codex-Claude bridge (`teamcall`), swarm orchestration, and more.
 - **Multi-Modal Interaction**: Voice-first workflow with audio summaries + text responses for natural agent communication.
 - **Agentic Workflow**: Implements the "Two Worlds" principle—AI-native operations first, UI only when necessary.
 - **Knowledge Systems**: Integrated `memory_palace` and `world_knowledge` templates for persistent, long-term memory.
@@ -47,6 +47,7 @@ Ask Claude to create adapters for Windows or Linux for the skills. Since most of
   - `chrome-control`: Browser control and navigation
   - `voice-conversation`: Multi-agent voice communication (TTS/STT)
   - `context-rag`: Knowledge retrieval system
+  - `teamcall`: Local Codex-Claude ping-pong bridge
   - `swarm_skill`: Agent orchestration
   - And more...
 - `scripts/`: Core Python utilities for context compression and search.
