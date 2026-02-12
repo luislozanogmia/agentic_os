@@ -33,3 +33,10 @@ Each skill in this package extends Claude's capabilities with specialized tools.
 **Unified Search**
 - **How it works**: Fast substring matching across all knowledge bases and conversation history.
 - **Commands**: Integrated into `search_function.py`.
+
+## 6. teamcall
+**Codex-Claude Local Bridge**
+- **How it works**: Runs local ping-pong communication between `codex` and `claude` CLIs with explicit sender and receiver routing.
+- **Commands**:
+  - `python3 ~/.claude/skills/teamcall/teamcall.py --from-agent codex --to-agent claude --message "Quick sync" --turns 1`
+- **Key Files**: `skills/teamcall/SKILL.md`, `skills/teamcall/teamcall.py`.

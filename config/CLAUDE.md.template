@@ -59,6 +59,7 @@ For detailed infrastructure and workflows, see `{{DOCS_PATH}}/memory_palace.md`
 1. **ax-executor** - UI automation across macOS.
 2. **chrome-control** - Browser navigation via keyboard automation.
 3. **context-rag** - Knowledge retrieval from web and local sources.
+4. **teamcall** - Local Codex-Claude ping-pong bridge with explicit sender/receiver routing.
 
 Use Skill(name) to invoke.
 
