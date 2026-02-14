@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Multi-channel bot bridge for Telegram and WhatsApp with a generic LLM backend."""
+"""Telegram bot bridge with a generic LLM backend."""
 
 from __future__ import annotations
 
@@ -16,7 +16,6 @@ import requests
 
 MAX_TELEGRAM_CHARS = 3900
 MAX_SESSION_MESSAGES = 20
-MAX_SEEN_WHATSAPP_IDS = 5000
 
 
 class BridgeError(RuntimeError):
@@ -83,10 +82,6 @@ def split_message(text: str, limit: int = MAX_TELEGRAM_CHARS) -> list[str]:
     return chunks
 
 
-def normalize_whatsapp_address(value: str) -> str:
-    return (value or "").strip().lower()
-
-
 @dataclass
 class BridgeConfig:
     env_file: Path
@@ -95,11 +90,6 @@ class BridgeConfig:
     telegram_poll_timeout: int
     telegram_token: str | None
     allowed_telegram_chat_ids: set[int]
-    whatsapp_enabled: bool
-    twilio_account_sid: str | None
-    twilio_auth_token: str | None
-    twilio_from_number: str | None
-    allowed_whatsapp_senders: set[str]
     llm_base_url: str
     llm_api_key: str | None
     llm_model: str
@@ -112,7 +102,7 @@ def default_state_file() -> Path:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Bot bridge for Telegram and WhatsApp.")
+    parser = argparse.ArgumentParser(description="Bot bridge for Telegram.")
     parser.add_argument("--env-file", default=os.getenv("BOT_ENV_FILE") or str(Path.home() / "bot.env"))
     parser.add_argument("--state-file", default=os.getenv("BOT_STATE_FILE") or str(default_state_file()))
     parser.add_argument("--poll-seconds", type=float, default=float(os.getenv("BOT_POLL_SECONDS", "2")))
@@ -136,18 +126,6 @@ def build_config(args: argparse.Namespace) -> BridgeConfig:
         except ValueError:
             log(f"Ignoring invalid chat id in BOT_ALLOWED_TELEGRAM_CHAT_IDS: {item}")
 
-    twilio_sid = os.getenv("TWILIO_ACCOUNT_SID")
-    twilio_token = os.getenv("TWILIO_AUTH_TOKEN")
-    twilio_from = os.getenv("TWILIO_WHATSAPP_NUMBER")
-    whatsapp_default = bool(twilio_sid and twilio_token and twilio_from)
-    whatsapp_enabled = env_bool("BOT_WHATSAPP_ENABLED", default=whatsapp_default)
-
-    allowed_senders = {
-        normalize_whatsapp_address(item)
-        for item in env_csv("BOT_ALLOWED_WHATSAPP_SENDERS")
-        if normalize_whatsapp_address(item)
-    }
-
     return BridgeConfig(
         env_file=Path(args.env_file).expanduser(),
         state_file=Path(args.state_file).expanduser(),
@@ -155,11 +133,6 @@ def build_config(args: argparse.Namespace) -> BridgeConfig:
         telegram_poll_timeout=max(1, int(args.telegram_poll_timeout)),
         telegram_token=token,
         allowed_telegram_chat_ids=allowed_chat_ids,
-        whatsapp_enabled=whatsapp_enabled,
-        twilio_account_sid=twilio_sid,
-        twilio_auth_token=twilio_token,
-        twilio_from_number=twilio_from,
-        allowed_whatsapp_senders=allowed_senders,
         llm_base_url=(os.getenv("BOT_LLM_BASE_URL") or "https://api.openai.com/v1").rstrip("/"),
         llm_api_key=os.getenv("BOT_LLM_API_KEY") or os.getenv("OPENAI_API_KEY"),
         llm_model=os.getenv("BOT_LLM_MODEL") or "gpt-4o-mini",
@@ -187,8 +160,6 @@ def load_state(path: Path) -> dict[str, Any]:
         state["telegram_offset"] = 0
     if not isinstance(state.get("sessions"), dict):
         state["sessions"] = {}
-    if not isinstance(state.get("whatsapp_seen_sids"), list):
-        state["whatsapp_seen_sids"] = []
 
     return state
 
@@ -311,10 +282,8 @@ def telegram_help_text() -> str:
 
 def telegram_status_text(cfg: BridgeConfig) -> str:
     telegram_state = "enabled" if cfg.telegram_token else "disabled"
-    whatsapp_state = "enabled" if cfg.whatsapp_enabled else "disabled"
     return (
         f"telegram: {telegram_state}\n"
-        f"whatsapp: {whatsapp_state}\n"
         f"llm_model: {cfg.llm_model}\n"
         f"llm_base_url: {cfg.llm_base_url}"
     )
@@ -362,8 +331,6 @@ def poll_telegram(cfg: BridgeConfig, state: dict[str, Any]) -> bool:
         return False
 
     timeout = cfg.telegram_poll_timeout
-    if cfg.whatsapp_enabled:
-        timeout = min(timeout, 6)
 
     payload = {
         "offset": state.get("telegram_offset", 0),
@@ -391,143 +358,8 @@ def poll_telegram(cfg: BridgeConfig, state: dict[str, Any]) -> bool:
     return changed
 
 
-def twilio_request(
-    method: str,
-    url: str,
-    account_sid: str,
-    auth_token: str,
-    params: dict[str, Any] | None = None,
-    data: dict[str, Any] | None = None,
-    timeout: float = 30.0,
-) -> dict[str, Any]:
-    try:
-        response = requests.request(
-            method=method,
-            url=url,
-            auth=(account_sid, auth_token),
-            params=params,
-            data=data,
-            timeout=timeout,
-        )
-    except requests.RequestException as exc:
-        raise BridgeError(f"Twilio request failed: {exc}") from exc
-
-    if response.status_code >= 400:
-        raise BridgeError(f"Twilio HTTP {response.status_code}: {response.text[:400]}")
-
-    try:
-        payload = response.json()
-    except ValueError as exc:
-        raise BridgeError("Twilio response was not valid JSON") from exc
-
-    if not isinstance(payload, dict):
-        raise BridgeError("Twilio response shape was invalid")
-    return payload
-
-
-def twilio_send_whatsapp_message(cfg: BridgeConfig, to_number: str, text: str) -> None:
-    if not (cfg.twilio_account_sid and cfg.twilio_auth_token and cfg.twilio_from_number):
-        raise BridgeError("Twilio WhatsApp settings are incomplete")
-
-    url = f"https://api.twilio.com/2010-04-01/Accounts/{cfg.twilio_account_sid}/Messages.json"
-    payload = {
-        "To": to_number,
-        "From": cfg.twilio_from_number,
-        "Body": text,
-    }
-    twilio_request(
-        method="POST",
-        url=url,
-        account_sid=cfg.twilio_account_sid,
-        auth_token=cfg.twilio_auth_token,
-        data=payload,
-        timeout=30.0,
-    )
-
-
-def poll_whatsapp(cfg: BridgeConfig, state: dict[str, Any]) -> bool:
-    if not cfg.whatsapp_enabled:
-        return False
-
-    if not (cfg.twilio_account_sid and cfg.twilio_auth_token and cfg.twilio_from_number):
-        raise BridgeError("BOT_WHATSAPP_ENABLED is true but Twilio credentials are missing")
-
-    url = f"https://api.twilio.com/2010-04-01/Accounts/{cfg.twilio_account_sid}/Messages.json"
-    payload = twilio_request(
-        method="GET",
-        url=url,
-        account_sid=cfg.twilio_account_sid,
-        auth_token=cfg.twilio_auth_token,
-        params={"PageSize": "30"},
-        timeout=30.0,
-    )
-
-    messages = payload.get("messages")
-    if not isinstance(messages, list):
-        return False
-
-    seen_sids = state.get("whatsapp_seen_sids")
-    if not isinstance(seen_sids, list):
-        seen_sids = []
-        state["whatsapp_seen_sids"] = seen_sids
-
-    seen_lookup = {str(item) for item in seen_sids if isinstance(item, str)}
-    own_number = normalize_whatsapp_address(cfg.twilio_from_number)
-
-    changed = False
-
-    for msg in reversed(messages):
-        if not isinstance(msg, dict):
-            continue
-
-        sid = msg.get("sid")
-        if not isinstance(sid, str) or not sid:
-            continue
-
-        if sid in seen_lookup:
-            continue
-
-        direction = (msg.get("direction") or "").strip().lower()
-        if not direction.startswith("inbound"):
-            continue
-
-        from_number = normalize_whatsapp_address(str(msg.get("from") or ""))
-        to_number = normalize_whatsapp_address(str(msg.get("to") or ""))
-
-        if own_number and to_number and own_number != to_number:
-            continue
-
-        if cfg.allowed_whatsapp_senders and from_number not in cfg.allowed_whatsapp_senders:
-            log(f"Skipping disallowed WhatsApp sender={from_number}")
-            seen_sids.append(sid)
-            seen_lookup.add(sid)
-            changed = True
-            continue
-
-        body = str(msg.get("body") or "").strip()
-        if not body:
-            seen_sids.append(sid)
-            seen_lookup.add(sid)
-            changed = True
-            continue
-
-        session_id = f"whatsapp:{from_number}"
-        reply = llm_chat_completion(cfg, state, session_id, body)
-        twilio_send_whatsapp_message(cfg, str(msg.get("from")), reply)
-
-        seen_sids.append(sid)
-        seen_lookup.add(sid)
-        changed = True
-
-    if len(seen_sids) > MAX_SEEN_WHATSAPP_IDS:
-        state["whatsapp_seen_sids"] = seen_sids[-MAX_SEEN_WHATSAPP_IDS:]
-
-    return changed
-
-
 def validate_startup(cfg: BridgeConfig) -> tuple[bool, bool]:
     telegram_enabled = bool(cfg.telegram_token)
-    whatsapp_enabled = bool(cfg.whatsapp_enabled)
 
     if telegram_enabled and cfg.telegram_token:
         try:
@@ -540,15 +372,7 @@ def validate_startup(cfg: BridgeConfig) -> tuple[bool, bool]:
         except Exception as exc:  # noqa: BLE001
             log(f"Telegram disabled due to startup error: {exc}")
             telegram_enabled = False
-
-    if whatsapp_enabled:
-        if not (cfg.twilio_account_sid and cfg.twilio_auth_token and cfg.twilio_from_number):
-            log("WhatsApp disabled because Twilio settings are incomplete")
-            whatsapp_enabled = False
-        else:
-            log("WhatsApp (Twilio) enabled")
-
-    return telegram_enabled, whatsapp_enabled
+    return telegram_enabled, False
 
 
 def main() -> int:
@@ -563,11 +387,10 @@ def main() -> int:
 
     telegram_enabled, whatsapp_enabled = validate_startup(cfg)
     cfg.telegram_token = cfg.telegram_token if telegram_enabled else None
-    cfg.whatsapp_enabled = whatsapp_enabled
 
-    if not cfg.telegram_token and not cfg.whatsapp_enabled:
+    if not cfg.telegram_token:
         print(
-            "No channel enabled. Configure TELEGRAM_BOT_TOKEN/MIA_BRIDGE_BOT_KEY and/or Twilio WhatsApp keys.",
+            "Telegram is not enabled. Configure TELEGRAM_BOT_TOKEN or MIA_BRIDGE_BOT_KEY.",
             flush=True,
         )
         return 2
@@ -586,12 +409,6 @@ def main() -> int:
                 changed = poll_telegram(cfg, state) or changed
             except Exception as exc:  # noqa: BLE001
                 log(f"Telegram poll error: {exc}")
-
-        if cfg.whatsapp_enabled:
-            try:
-                changed = poll_whatsapp(cfg, state) or changed
-            except Exception as exc:  # noqa: BLE001
-                log(f"WhatsApp poll error: {exc}")
 
         if changed:
             save_state(cfg.state_file, state)

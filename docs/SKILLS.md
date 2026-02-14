@@ -42,8 +42,8 @@ Each skill in this package extends Claude's capabilities with specialized tools.
 - **Key Files**: `skills/teamcall/SKILL.md`, `skills/teamcall/teamcall.py`.
 
 ## 7. bot-bridge
-**Telegram + WhatsApp Bridge**
-- **How it works**: Polls Telegram and Twilio WhatsApp channels, then routes each message to a generic OpenAI-compatible chat completion API.
+**Telegram Bridge**
+- **How it works**: Polls Telegram, then routes each message to a generic OpenAI-compatible chat completion API.
 - **Commands**:
   - `bash ~/.claude/skills/bot-bridge/setup_bot_env.sh`
   - `bash ~/.claude/skills/bot-bridge/run_bot_bridge.sh`

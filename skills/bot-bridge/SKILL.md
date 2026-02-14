@@ -1,17 +1,17 @@
 ---
 name: bot-bridge
-description: Run a multi-channel bot bridge for Telegram and WhatsApp with a generic OpenAI-compatible LLM API backend and optional macOS status bar control.
+description: Run a Telegram bot bridge with a generic OpenAI-compatible LLM API backend and optional macOS status bar control.
 allowed-tools: Bash(python3:*), Bash(/bin/bash:*), Read, Grep
 ---
 
 # Bot Bridge
 
-Bridge incoming Telegram and WhatsApp messages into a single OpenAI-compatible LLM endpoint.
+Bridge incoming Telegram messages into a single OpenAI-compatible LLM endpoint.
 No Codex CLI or Claude CLI routing is required.
 
 ## Files
 
-- `bot_bridge.py`: Main runtime for Telegram + WhatsApp + generic LLM API.
+- `bot_bridge.py`: Main runtime for Telegram + generic LLM API.
 - `bot_bar.py`: macOS status bar app with `bot: ON` and `bot: OFF` state.
 - `run_bot_bridge.sh`: macOS/Linux launcher.
 - `run_bot_bar.sh`: macOS status bar launcher.
@@ -35,13 +35,6 @@ Telegram values:
 
 - `MIA_BRIDGE_BOT_KEY` or `TELEGRAM_BOT_TOKEN`
 - optional `BOT_ALLOWED_TELEGRAM_CHAT_IDS`
-
-WhatsApp values (Twilio):
-
-- `BOT_WHATSAPP_ENABLED=1`
-- `TWILIO_ACCOUNT_SID`
-- `TWILIO_AUTH_TOKEN`
-- `TWILIO_WHATSAPP_NUMBER`
 
 ## Quick Start
 

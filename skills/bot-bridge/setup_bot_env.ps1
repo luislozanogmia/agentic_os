@@ -30,19 +30,6 @@ $BOT_LLM_API_KEY = Ask "LLM API key (BOT_LLM_API_KEY)" ""
 $MIA_BRIDGE_BOT_KEY = Ask "Telegram bot key (MIA_BRIDGE_BOT_KEY, optional)" ""
 $BOT_ALLOWED_TELEGRAM_CHAT_IDS = Ask "Allowed Telegram chat IDs (comma separated, optional)" ""
 
-$BOT_WHATSAPP_ENABLED = Ask "Enable WhatsApp via Twilio? (1/0)" "0"
-if ($BOT_WHATSAPP_ENABLED -eq "1") {
-  $TWILIO_ACCOUNT_SID = Ask "Twilio Account SID" ""
-  $TWILIO_AUTH_TOKEN = Ask "Twilio Auth Token" ""
-  $TWILIO_WHATSAPP_NUMBER = Ask "Twilio WhatsApp number (example: whatsapp:+14155238886)" ""
-  $BOT_ALLOWED_WHATSAPP_SENDERS = Ask "Allowed WhatsApp senders (comma separated, optional)" ""
-} else {
-  $TWILIO_ACCOUNT_SID = ""
-  $TWILIO_AUTH_TOKEN = ""
-  $TWILIO_WHATSAPP_NUMBER = ""
-  $BOT_ALLOWED_WHATSAPP_SENDERS = ""
-}
-
 $BOT_POLL_SECONDS = Ask "Poll interval seconds" "2"
 $BOT_TELEGRAM_POLL_TIMEOUT = Ask "Telegram long-poll timeout seconds" "20"
 
@@ -57,12 +44,6 @@ $lines = @(
   "",
   "MIA_BRIDGE_BOT_KEY=$MIA_BRIDGE_BOT_KEY",
   "BOT_ALLOWED_TELEGRAM_CHAT_IDS=$BOT_ALLOWED_TELEGRAM_CHAT_IDS",
-  "",
-  "BOT_WHATSAPP_ENABLED=$BOT_WHATSAPP_ENABLED",
-  "TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID",
-  "TWILIO_AUTH_TOKEN=$TWILIO_AUTH_TOKEN",
-  "TWILIO_WHATSAPP_NUMBER=$TWILIO_WHATSAPP_NUMBER",
-  "BOT_ALLOWED_WHATSAPP_SENDERS=$BOT_ALLOWED_WHATSAPP_SENDERS",
   "",
   "BOT_POLL_SECONDS=$BOT_POLL_SECONDS",
   "BOT_TELEGRAM_POLL_TIMEOUT=$BOT_TELEGRAM_POLL_TIMEOUT"

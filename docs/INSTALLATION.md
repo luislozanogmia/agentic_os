@@ -36,7 +36,7 @@
    - Add your **Terminal** app (or VS Code) to the list.
    - Go to **Input Monitoring** and do the same.
 
-## Bot Bridge Setup (Telegram + WhatsApp + Generic LLM API)
+## Bot Bridge Setup (Telegram + Generic LLM API)
 
 The bot bridge reads from `$HOME/bot.env` (macOS/Linux) or `%USERPROFILE%\\bot.env` (Windows).
 

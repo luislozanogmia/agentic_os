@@ -9,7 +9,7 @@ Configuration template for the Claude Code. This setup transforms Claude from a 
 
 ## ✨ Key Features
 
-- **9 Core Skills**: UI automation (`ax-executor`), browser control (`chrome-control`), voice communication (`voice-conversation`), local Codex-Claude bridge (`teamcall`), bot messaging bridge (`bot-bridge`), swarm orchestration, and more.
+- **9 Core Skills**: UI automation (`ax-executor`), browser control (`chrome-control`), voice communication (`voice-conversation`), local Codex-Claude bridge (`teamcall`), Telegram bot bridge (`bot-bridge`), swarm orchestration, and more.
 - **Multi-Modal Interaction**: Voice-first workflow with audio summaries + text responses for natural agent communication.
 - **Agentic Workflow**: Implements the "Two Worlds" principle—AI-native operations first, UI only when necessary.
 - **Knowledge Systems**: Integrated `memory_palace` and `world_knowledge` templates for persistent, long-term memory.
@@ -54,7 +54,7 @@ Configuration template for the Claude Code. This setup transforms Claude from a 
   - `voice-conversation`: Multi-agent voice communication (TTS/STT)
   - `context-rag`: Knowledge retrieval system
   - `teamcall`: Local Codex-Claude ping-pong bridge
-  - `bot-bridge`: Telegram + WhatsApp bridge to OpenAI-compatible LLM APIs
+  - `bot-bridge`: Telegram bridge to OpenAI-compatible LLM APIs
   - `swarm_skill`: Agent orchestration
   - And more...
 - `scripts/`: Core Python utilities for context compression and search.
@@ -65,7 +65,6 @@ Configuration template for the Claude Code. This setup transforms Claude from a 
 
 The new `bot-bridge` skill supports:
 - Telegram via `MIA_BRIDGE_BOT_KEY` or `TELEGRAM_BOT_TOKEN`
-- WhatsApp via Twilio
 - Any OpenAI-compatible LLM API (custom base URL + API key + model)
 
 Default config file:
