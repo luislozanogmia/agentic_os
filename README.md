@@ -1,13 +1,15 @@
-# Agentic OS a.k.a. Claude Code Config (macOS) 🚀
+# Agentic OS a.k.a. Claude Code Config 🚀
 
 Configuration template for the Claude Code. This setup transforms Claude from a coding agent to full-desktop operation agent, it will be able to spawm more agents at the same time via swarm_mode, create a mini-wiki for you via the skill research, run your applications as yourself via the desktop automation, and manage its own memory via memory_palace.
 
-## 🤔 Not using MacOS?
-Ask Claude to create adapters for Windows or Linux for the skills. Since most of the skills are python Claude will just edit the names of the process to gather info from, should take 20-30min. For Windows I tested it and took 20 min, I don't have Linux to test.
+## 🧭 Platform Support
+- **macOS**: Full support, including status-bar skills.
+- **Windows**: Supported for non-AX skills and bridge workflows via `setup.ps1`.
+- **Linux**: Most Python-based skills work with small path/process adapters.
 
 ## ✨ Key Features
 
-- **8 Core Skills**: UI automation (`ax-executor`), browser control (`chrome-control`), voice communication (`voice-conversation`), local Codex-Claude bridge (`teamcall`), swarm orchestration, and more.
+- **9 Core Skills**: UI automation (`ax-executor`), browser control (`chrome-control`), voice communication (`voice-conversation`), local Codex-Claude bridge (`teamcall`), Telegram bot bridge (`bot-bridge`), swarm orchestration, and more.
 - **Multi-Modal Interaction**: Voice-first workflow with audio summaries + text responses for natural agent communication.
 - **Agentic Workflow**: Implements the "Two Worlds" principle—AI-native operations first, UI only when necessary.
 - **Knowledge Systems**: Integrated `memory_palace` and `world_knowledge` templates for persistent, long-term memory.
@@ -16,7 +18,7 @@ Ask Claude to create adapters for Windows or Linux for the skills. Since most of
 
 ## 🛠 Prerequisites
 
-- **OS**: macOS 12+ (Monterey or later)
+- **OS**: macOS 12+ recommended, Windows supported for core Python workflows.
 - **Python**: 3.10+
 - **CLI**: [Claude Code](https://claude.ai/code) installed and authenticated.
 
@@ -33,6 +35,10 @@ Ask Claude to create adapters for Windows or Linux for the skills. Since most of
    chmod +x setup.sh
    ./setup.sh
    ```
+   On Windows (PowerShell):
+   ```powershell
+   .\setup.ps1
+   ```
 
 3. **Restart Claude Code**:
    ```bash
@@ -48,11 +54,42 @@ Ask Claude to create adapters for Windows or Linux for the skills. Since most of
   - `voice-conversation`: Multi-agent voice communication (TTS/STT)
   - `context-rag`: Knowledge retrieval system
   - `teamcall`: Local Codex-Claude ping-pong bridge
+  - `bot-bridge`: Telegram bridge to OpenAI-compatible LLM APIs
   - `swarm_skill`: Agent orchestration
   - And more...
 - `scripts/`: Core Python utilities for context compression and search.
 - `knowledge/`: Templates for building your own persistent memory system.
 - `docs/`: Detailed guides for each skill and architectural principle.
+
+## 🤖 Bot Bridge Quick Start
+
+The new `bot-bridge` skill supports:
+- Telegram via `MIA_BRIDGE_BOT_KEY` or `TELEGRAM_BOT_TOKEN`
+- Any OpenAI-compatible LLM API (custom base URL + API key + model)
+
+Default config file:
+- macOS/Linux: `$HOME/bot.env`
+- Windows: `%USERPROFILE%\\bot.env`
+
+macOS/Linux:
+```bash
+cd skills/bot-bridge
+./setup_bot_env.sh
+./run_bot_bridge.sh
+```
+
+Windows:
+```powershell
+cd skills\bot-bridge
+.\setup_bot_env.ps1
+.\run_bot_bridge.ps1
+```
+
+macOS status bar app:
+```bash
+cd skills/bot-bridge
+./run_bot_bar.sh
+```
 
 ## ⚖️ License
 
