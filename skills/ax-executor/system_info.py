@@ -725,8 +725,8 @@ class EventEnricher:
             x, y = raw_event["coordinates"]
             window = WindowDetector.get_window_at_coordinates(x, y)
             
-            # Filter out MIA Beta control app
-            if "Recording Controls - MIA Beta" in window.title:
+            # Filter out recording-controls window
+            if "Recording Controls" in window.title:
                 return None
             
             # Calculate positions
@@ -785,8 +785,8 @@ class EventEnricher:
         try:
             window = FrontmostAppDetector.get_current_app_info()
             
-            # Filter out MIA Beta control app
-            if "Recording Controls - MIA Beta" in window.title:
+            # Filter out recording-controls window
+            if "Recording Controls" in window.title:
                 return None
             
             # Chrome profile detection

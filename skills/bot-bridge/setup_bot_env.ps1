@@ -27,7 +27,7 @@ $BOT_LLM_MODEL = Ask "LLM model" "gpt-4o-mini"
 $BOT_LLM_SYSTEM_PROMPT = Ask "System prompt" "You are a concise helpful assistant responding in plain text."
 $BOT_LLM_API_KEY = Ask "LLM API key (BOT_LLM_API_KEY)" ""
 
-$MIA_BRIDGE_BOT_KEY = Ask "Telegram bot key (MIA_BRIDGE_BOT_KEY, optional)" ""
+$TELEGRAM_BOT_TOKEN = Ask "Telegram bot token (TELEGRAM_BOT_TOKEN)" ""
 $BOT_ALLOWED_TELEGRAM_CHAT_IDS = Ask "Allowed Telegram chat IDs (comma separated, optional)" ""
 
 $BOT_POLL_SECONDS = Ask "Poll interval seconds" "2"
@@ -42,7 +42,7 @@ $lines = @(
   "BOT_LLM_MODEL=$BOT_LLM_MODEL",
   "BOT_LLM_SYSTEM_PROMPT=$BOT_LLM_SYSTEM_PROMPT",
   "",
-  "MIA_BRIDGE_BOT_KEY=$MIA_BRIDGE_BOT_KEY",
+  "TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN",
   "BOT_ALLOWED_TELEGRAM_CHAT_IDS=$BOT_ALLOWED_TELEGRAM_CHAT_IDS",
   "",
   "BOT_POLL_SECONDS=$BOT_POLL_SECONDS",

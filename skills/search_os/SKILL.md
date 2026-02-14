@@ -334,7 +334,7 @@ If new information contradicts existing FACT blocks in world_knowledge.md:
 ### Agents Using world_knowledge.md
 - **Claude**: Searches for past research, avoids re-investigating
 - **Gemini**: Finds technical patterns and implementations
-- **Mia**: References grounded facts during validation
+- **Codex**: References grounded facts during validation
 - **Timmy**: Appends new research with timestamps and sources
 
 ---

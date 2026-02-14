@@ -92,7 +92,7 @@ Finds "Run Code" button in VS Code editor and clicks it. **Same tool, different 
 
 ### Example 3: Search Chrome Without Clicking
 ```bash
-python3 ~/.claude/ax_search_and_click.py "mia labs"
+python3 ~/.claude/ax_search_and_click.py "Settings"
 ```
 
 Finds all matching elements on screen, shows details, doesn't click. Works in Chrome, Safari, Firefox, anywhere.
