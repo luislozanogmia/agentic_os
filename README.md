@@ -63,7 +63,7 @@ Configuration template for the Claude Code or Codex. This setup transforms your 
 ## 🤖 Bot Bridge Quick Start
 
 The new `bot-bridge` skill supports:
-- Telegram via `MIA_BRIDGE_BOT_KEY` or `TELEGRAM_BOT_TOKEN`
+- Telegram via `TELEGRAM_BOT_TOKEN`
 - Any OpenAI-compatible LLM API (custom base URL + API key + model)
 
 Default config file:

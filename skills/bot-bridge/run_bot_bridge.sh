@@ -28,10 +28,6 @@ elif [[ -f "$ENV_FILE" ]]; then
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] Warning: $ENV_FILE exists but is not readable"
 fi
 
-if [[ -z "${TELEGRAM_BOT_TOKEN:-}" && -n "${MIA_BRIDGE_BOT_KEY:-}" ]]; then
-  export TELEGRAM_BOT_TOKEN="$MIA_BRIDGE_BOT_KEY"
-fi
-
 exec python3 "$ROOT_DIR/bot_bridge.py" \
   --env-file "$ENV_FILE" \
   --state-file "$STATE_DIR/bot_bridge_state.json"

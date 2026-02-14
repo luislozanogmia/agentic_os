@@ -21,10 +21,6 @@ if (Test-Path $EnvPath) {
   }
 }
 
-if (-not $env:TELEGRAM_BOT_TOKEN -and $env:MIA_BRIDGE_BOT_KEY) {
-  $env:TELEGRAM_BOT_TOKEN = $env:MIA_BRIDGE_BOT_KEY
-}
-
 $stateFile = Join-Path $StateDir "bot_bridge_state.json"
 
 python "$ScriptRoot\\bot_bridge.py" --env-file "$EnvPath" --state-file "$stateFile" 2>&1 | Tee-Object -FilePath $LogFile -Append

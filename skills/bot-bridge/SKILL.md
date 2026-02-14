@@ -33,7 +33,7 @@ Required core values:
 
 Telegram values:
 
-- `MIA_BRIDGE_BOT_KEY` or `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_BOT_TOKEN`
 - optional `BOT_ALLOWED_TELEGRAM_CHAT_IDS`
 
 ## Quick Start

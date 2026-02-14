@@ -43,7 +43,7 @@ def on_click(x, y, button, pressed, log_path, screen_dir=None):
     # Enrich with app/window context using clean API
     enriched_event = enrich_mouse_event(raw_event)
     if enriched_event is None:
-        return  # Skip logging MIA Beta control events
+        return  # Skip logging internal control-app events
 
    # ADD AX BUTTON DETECTION
     from system_info import get_elements_near_point, is_accessibility_ready, debug_ax_status
@@ -180,7 +180,7 @@ def on_click(x, y, button, pressed, log_path, screen_dir=None):
 # === Mouse Tracker Entrypoint ===
 def run_mouse_tracker(log_path, screen_dir, stop_event=None):
    if log_path is None:
-       # Get the absolute path of this script (should be in mia_desktop/learning/)
+       # Get the absolute path of this script (learning logs are stored next to this file)
        script_dir = os.path.dirname(os.path.abspath(__file__))
        LOG_DIR = os.path.join(script_dir, "learning_logs")
        os.makedirs(LOG_DIR, exist_ok=True)

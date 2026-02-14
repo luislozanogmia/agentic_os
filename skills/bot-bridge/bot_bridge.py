@@ -115,9 +115,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def build_config(args: argparse.Namespace) -> BridgeConfig:
-    token = os.getenv("TELEGRAM_BOT_TOKEN") or os.getenv("MIA_BRIDGE_BOT_KEY")
-    if token and not os.getenv("TELEGRAM_BOT_TOKEN"):
-        os.environ["TELEGRAM_BOT_TOKEN"] = token
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
 
     allowed_chat_ids: set[int] = set()
     for item in env_csv("BOT_ALLOWED_TELEGRAM_CHAT_IDS"):
@@ -390,7 +388,7 @@ def main() -> int:
 
     if not cfg.telegram_token:
         print(
-            "Telegram is not enabled. Configure TELEGRAM_BOT_TOKEN or MIA_BRIDGE_BOT_KEY.",
+            "Telegram is not enabled. Configure TELEGRAM_BOT_TOKEN.",
             flush=True,
         )
         return 2

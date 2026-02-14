@@ -15,9 +15,9 @@ from dotenv import load_dotenv
 
 # Load environment variables from multiple locations (priority order)
 # 1. ~/.env (home directory)
-# 2. ~/Documents/vibecoding/.env (project directory)
+# 2. ./.env (current working directory)
 load_dotenv(Path.home() / ".env")
-load_dotenv(Path.home() / "Documents/vibecoding/.env")
+load_dotenv(Path.cwd() / ".env")
 
 # Shared directories
 SHARED_DIR = Path.home() / ".agent-shared" / "voice"
@@ -33,7 +33,7 @@ RESPONSE_FILE = SHARED_DIR / "latest_response.json"
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
 # Voice assignments by agent:
 # - Claude (male): Josh (ZoiZ8fuDWInAcwPXaVeq) - deep, warm, professional
-# - Mia (female): Charlotte (XB0fDUnXU5powFXDhCwa) - cool, monotone, efficient
+# - Assistant (female): Charlotte (XB0fDUnXU5powFXDhCwa) - cool, monotone, efficient
 # - Gemini (neutral): EGPLqH9Wz2tNLu58EJVR - clear, articulate, analytical
 ELEVENLABS_VOICE_ID = os.getenv("ELEVENLABS_VOICE_ID", "ZoiZ8fuDWInAcwPXaVeq")  # Default: Josh (Claude's voice - deep, warm, professional)
 USE_ELEVENLABS = ELEVENLABS_API_KEY is not None
@@ -352,7 +352,7 @@ def conversation_loop(agent_name="claude", duration=5, whisper_model="base"):
     Real-time voice conversation loop: Record → Transcribe → Agent Response → Play → Repeat
 
     Args:
-        agent_name: "claude", "mia", or "gemini"
+        agent_name: "claude", "assistant", or "gemini"
         duration: Recording length per turn (seconds)
         whisper_model: Whisper model size
 
@@ -365,9 +365,9 @@ def conversation_loop(agent_name="claude", duration=5, whisper_model="base"):
             "voice_id": "ZoiZ8fuDWInAcwPXaVeq",
             "name": "Claude"
         },
-        "mia": {
+        "assistant": {
             "voice_id": "XB0fDUnXU5powFXDhCwa",
-            "name": "Mia"
+            "name": "Assistant"
         },
         "gemini": {
             "voice_id": "EGPLqH9Wz2tNLu58EJVR",
@@ -453,7 +453,7 @@ def interactive_voice_session(agent_name="claude", duration=5, whisper_model="ba
     text responses that are then synthesized to speech.
 
     Args:
-        agent_name: "claude", "mia", or "gemini"
+        agent_name: "claude", "assistant", or "gemini"
         duration: Recording length per turn (seconds)
         whisper_model: Whisper model size
 
@@ -465,9 +465,9 @@ def interactive_voice_session(agent_name="claude", duration=5, whisper_model="ba
             "voice_id": "ZoiZ8fuDWInAcwPXaVeq",
             "name": "Claude"
         },
-        "mia": {
+        "assistant": {
             "voice_id": "XB0fDUnXU5powFXDhCwa",
-            "name": "Mia"
+            "name": "Assistant"
         },
         "gemini": {
             "voice_id": "EGPLqH9Wz2tNLu58EJVR",
@@ -654,7 +654,7 @@ if __name__ == "__main__":
         print(json.dumps(conversation, indent=2))
 
     else:
-        print("Voice Handler - Talk to Claude, Mia, or Gemini")
+        print("Voice Handler - Talk to Claude, Assistant, or Gemini")
         print("\nUsage:")
         print("  python3 voice_handler.py --record [--duration N]")
         print("  python3 voice_handler.py --transcribe <file> [--model base]")
@@ -665,5 +665,5 @@ if __name__ == "__main__":
         print("  python3 voice_handler.py --interactive <agent> [--duration N]  ← HUMAN-IN-THE-LOOP")
         print("\nExamples:")
         print("  python3 voice_handler.py --interactive claude          # Interactive with Claude")
-        print("  python3 voice_handler.py --interactive mia --duration 3    # Interactive with Mia (3 sec recording)")
+        print("  python3 voice_handler.py --interactive assistant --duration 3    # Interactive with Assistant (3 sec recording)")
         print("  python3 voice_handler.py --interactive gemini          # Interactive with Gemini")

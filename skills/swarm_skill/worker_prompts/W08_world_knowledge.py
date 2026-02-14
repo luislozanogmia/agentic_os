@@ -77,7 +77,7 @@ def call_openrouter(messages: List[Dict], max_tokens: int = 2000, retry: int = 0
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://mialabs.ai",
+        "HTTP-Referer": os.getenv("OPENROUTER_HTTP_REFERER", "https://example.com"),
         "X-Title": "W08 World Knowledge Worker"
     }
 
@@ -658,7 +658,7 @@ def main():
         print(f"\nBatch complete: {len(topics)} topics")
 
     elif cmd == "daily-report":
-        recipient = "luis@mia-labs.com"
+        recipient = "recipient@example.com"
         limit = 5
         for i, arg in enumerate(sys.argv):
             if arg == "--to" and i + 1 < len(sys.argv):

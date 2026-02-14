@@ -1,7 +1,7 @@
 ---
 name: voice-conversation
 description: Real-time voice conversation - record, transcribe, speak. Optimized for M2 Mac
-agents: [claude, mia, gemini]
+agents: [claude, assistant, gemini]
 type: voice-io
 tags: [voice, speech-to-text, text-to-speech, conversation, realtime]
 ---
@@ -94,7 +94,7 @@ Each agent has a distinct, personality-matched voice:
 - Tone: Deep, warm, professional
 - Use: `ELEVENLABS_VOICE_ID="ZoiZ8fuDWInAcwPXaVeq" python3 voice_handler.py --speak "..."`
 
-**Mia (ChatGPT)**
+**Assistant (ChatGPT)**
 - Backend: OpenAI ChatGPT API
 - Tone: Precise, structured, analytical
 - Role: Validation-first reasoning with mirror reflection
@@ -127,7 +127,7 @@ Each agent has a distinct, personality-matched voice:
    - Arrives while or after audio completes
    - User has full context in text form
 
-### Example: Mia Agent (ChatGPT)
+### Example: Assistant Agent (ChatGPT)
 ```
 ELEVENLABS_VOICE_ID="XB0fDUnXU5powFXDhCwa" python3 voice_handler.py --speak "Validating your request. Structure looks correct."
 
@@ -170,12 +170,12 @@ I recommend option 1 based on your performance requirements.
 - **Immediate presence** — User hears agent within 1 second
 - **Never forgotten** — Audio fires first, not added as afterthought
 - **Natural flow** — Voice + text arrive together, complementary
-- **Works for all agents** — Claude, Mia, Gemini all follow same pattern
+- **Works for all agents**. Claude, Assistant, Gemini all follow same pattern
 - **Respects user attention** — Short audio summary, full text for deep reading
 
 ## How Agents Use It
 
-**Claude/Mia/Gemini workflow (audio-first pattern):**
+**Claude/Assistant/Gemini workflow (audio-first pattern):**
 1. Receive user input (via Whisper transcription or direct message)
 2. **Fire audio summary immediately** (1-2 lines): `voice_handler.py --speak "..."`
 3. Generate detailed response text

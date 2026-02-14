@@ -64,7 +64,7 @@ def flush_buffer(trigger="timeout"):
             # Enrich with app context using clean API
             enriched_event = enrich_keyboard_event(raw_event)
             if enriched_event is None:
-                return  # Skip logging MIA Beta control events
+                return  # Skip logging internal control-app events
             append_to_log(enriched_event)
             
             print(f"[✏️] Flushed buffer: '{original_text}' → '{corrected_text}' ({trigger})")
@@ -128,7 +128,7 @@ def on_press(key):
                 # Enrich with app context using clean API
                 enriched_event = enrich_keyboard_event(raw_event)
                 if enriched_event is None:
-                    return  # Skip logging MIA Beta control events
+                    return  # Skip logging internal control-app events
                 append_to_log(enriched_event)
                 print(f"[🔀] Detected app switch via cmd+tab")
                 return
@@ -160,7 +160,7 @@ def on_press(key):
                 # Enrich with app context using clean API
                 enriched_event = enrich_keyboard_event(raw_event)
                 if enriched_event is None:
-                    return  # Skip logging MIA Beta control events
+                    return  # Skip logging internal control-app events
                 append_to_log(enriched_event)
                 print(f"[⌨️] Logged special key: {key_str}")
 
@@ -177,7 +177,7 @@ def run_keyboard_tracker(log_path=None, stop_event=None):
     global _timeout_stop_event
     _timeout_stop_event = stop_event
     if log_path is None:
-        # Get the absolute path of this script (should be in mia_desktop/learning/)
+        # Get the absolute path of this script (learning logs are stored next to this file)
         script_dir = os.path.dirname(os.path.abspath(__file__))
         LOG_DIR = os.path.join(script_dir, "learning_logs")
         os.makedirs(LOG_DIR, exist_ok=True)

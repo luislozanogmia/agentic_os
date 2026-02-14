@@ -16,7 +16,7 @@ ARCHITECTURAL FIX:
 - Last 2 messages kept verbatim (user + assistant)
 - Older messages compressed to unique semantic tokens
 
-Author: mia_labas & Open Source AI Community
+Author: Open Source AI Community
 License: MIT
 Repository: https://github.com/your-username/contextzip
 """

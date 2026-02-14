@@ -38,7 +38,7 @@ If ElevenLabs key is configured, it will use that. Otherwise falls back to nativ
 
 ## Voice Selection
 
-### Natural Female Voices (for Mia)
+### Natural Female Voices (for Assistant)
 - **Bella** (Default) - Warm, friendly, natural
 - **Rachel** - Clear, professional, articulate
 - **Charlotte** - Soft, warm, engaging
