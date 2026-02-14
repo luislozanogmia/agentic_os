@@ -1,6 +1,6 @@
-# Agentic OS a.k.a. Claude Code Config 🚀
+# Agentic OS a.k.a. Claude Code or Codex Config 🚀
 
-Configuration template for the Claude Code. This setup transforms Claude from a coding agent to full-desktop operation agent, it will be able to spawm more agents at the same time via swarm_mode, create a mini-wiki for you via the skill research, run your applications as yourself via the desktop automation, and manage its own memory via memory_palace.
+Configuration template for the Claude Code or Codex. This setup transforms your coding agent to full-desktop operation agent, it will be able to spawm more agents at the same time via swarm_mode, create a mini-wiki for you via the skill research, run your applications as yourself via the desktop automation, and manage its own memory via memory_palace.
 
 ## 🧭 Platform Support
 - **macOS**: Full support, including status-bar skills.
@@ -9,7 +9,7 @@ Configuration template for the Claude Code. This setup transforms Claude from a 
 
 ## ✨ Key Features
 
-- **9 Core Skills**: UI automation (`ax-executor`), browser control (`chrome-control`), voice communication (`voice-conversation`), local Codex-Claude bridge (`teamcall`), Telegram bot bridge (`bot-bridge`), swarm orchestration, and more.
+- **7 Core Skills**: UI automation (`ax-executor`), browser control (`chrome-control`), voice communication (`voice-conversation`), local Codex-Claude bridge (`teamcall`), Telegram bot bridge (`bot-bridge`), swarm orchestration.
 - **Multi-Modal Interaction**: Voice-first workflow with audio summaries + text responses for natural agent communication.
 - **Agentic Workflow**: Implements the "Two Worlds" principle—AI-native operations first, UI only when necessary.
 - **Knowledge Systems**: Integrated `memory_palace` and `world_knowledge` templates for persistent, long-term memory.
@@ -55,8 +55,7 @@ Configuration template for the Claude Code. This setup transforms Claude from a 
   - `context-rag`: Knowledge retrieval system
   - `teamcall`: Local Codex-Claude ping-pong bridge
   - `bot-bridge`: Telegram bridge to OpenAI-compatible LLM APIs
-  - `swarm_skill`: Agent orchestration
-  - And more...
+  - `swarm_skill`: Agent orchestration (Recommended for Codex only, Claude Code now has Agents Team built-in)
 - `scripts/`: Core Python utilities for context compression and search.
 - `knowledge/`: Templates for building your own persistent memory system.
 - `docs/`: Detailed guides for each skill and architectural principle.
