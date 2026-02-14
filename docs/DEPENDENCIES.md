@@ -16,3 +16,5 @@ The Python environment is managed automatically by `setup.sh` in `~/.claude/.ven
 ## External APIs
 - **Groq**: Recommended for swarm worker completions.
 - **OpenAI**: Optional fallback.
+- **Any OpenAI-compatible endpoint**: Supported by `skills/bot-bridge/bot_bridge.py` via `BOT_LLM_BASE_URL`.
+- **Twilio (optional)**: Required only if WhatsApp channel is enabled in bot bridge.

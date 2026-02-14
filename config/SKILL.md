@@ -25,3 +25,8 @@ Master catalog of all available skills. Each skill extends Claude's capabilities
 **Purpose**: Control Chrome for navigation and searching via keyboard.
 **Trigger**: When you need to browse the web or navigate specific UI.
 **Location**: `{{CLAUDE_HOME}}/skills/chrome-control/SKILL.md`
+
+### 4. **bot-bridge** - Telegram and WhatsApp Bridge
+**Purpose**: Route Telegram and Twilio WhatsApp messages into a generic OpenAI-compatible LLM API.
+**Trigger**: When you need a local messaging bot with configurable API keys and model endpoint.
+**Location**: `{{CLAUDE_HOME}}/skills/bot-bridge/SKILL.md`

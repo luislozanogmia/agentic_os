@@ -21,7 +21,8 @@ fi
 
 # 1. Platform Detection
 if [[ "$OSTYPE" != "darwin"* ]]; then
-    echo -e "${RED}Error: This configuration is optimized for macOS.${NC}"
+    echo -e "${RED}Error: setup.sh is for macOS.${NC}"
+    echo "For Windows, run setup.ps1 from PowerShell."
     exit 1
 fi
 
@@ -87,6 +88,15 @@ if [ ! -f "${CLAUDE_HOME}/.env" ]; then
     echo "OPENAI_API_KEY=" >> "${CLAUDE_HOME}/.env"
     echo -e "${YELLOW}⚠️  Created empty .env file at ${CLAUDE_HOME}/.env${NC}"
     echo -e "${YELLOW}👉 Please add your API keys there for full functionality.${NC}"
+fi
+
+if [[ -f "${REPO_ROOT}/skills/bot-bridge/setup_bot_env.sh" ]]; then
+    echo ""
+    read -p "Configure $HOME/bot.env for bot-bridge now? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        /bin/bash "${REPO_ROOT}/skills/bot-bridge/setup_bot_env.sh"
+    fi
 fi
 
 

@@ -40,3 +40,12 @@ Each skill in this package extends Claude's capabilities with specialized tools.
 - **Commands**:
   - `python3 ~/.claude/skills/teamcall/teamcall.py --from-agent codex --to-agent claude --message "Quick sync" --turns 1`
 - **Key Files**: `skills/teamcall/SKILL.md`, `skills/teamcall/teamcall.py`.
+
+## 7. bot-bridge
+**Telegram + WhatsApp Bridge**
+- **How it works**: Polls Telegram and Twilio WhatsApp channels, then routes each message to a generic OpenAI-compatible chat completion API.
+- **Commands**:
+  - `bash ~/.claude/skills/bot-bridge/setup_bot_env.sh`
+  - `bash ~/.claude/skills/bot-bridge/run_bot_bridge.sh`
+  - `bash ~/.claude/skills/bot-bridge/run_bot_bar.sh` (macOS status bar)
+- **Key Files**: `skills/bot-bridge/bot_bridge.py`, `skills/bot-bridge/bot_bar.py`, `skills/bot-bridge/SKILL.md`.
