@@ -54,7 +54,7 @@ Configuration template for the Claude Code or Codex. This setup transforms your 
   - `voice-conversation`: Multi-agent voice communication (TTS/STT)
   - `context-rag`: Knowledge retrieval system
   - `teamcall`: Local Codex-Claude ping-pong bridge
-  - `bot-bridge`: Telegram bridge to OpenAI-compatible LLM APIs
+  - `bot-bridge`: Telegram bridge to OpenAI/Anthropic-compatible LLM APIs with agentic tools
   - `swarm_skill`: Agent orchestration (Recommended for Codex only, Claude Code now has Agents Team built-in)
 - `scripts/`: Core Python utilities for context compression and search.
 - `knowledge/`: Templates for building your own persistent memory system.
@@ -62,9 +62,12 @@ Configuration template for the Claude Code or Codex. This setup transforms your 
 
 ## 🤖 Bot Bridge Quick Start
 
-The new `bot-bridge` skill supports:
+The `bot-bridge` skill supports:
 - Telegram via `TELEGRAM_BOT_TOKEN`
-- Any OpenAI-compatible LLM API (custom base URL + API key + model)
+- Any OpenAI-compatible LLM API (simple chat mode)
+- Anthropic-compatible APIs with agentic tool use (MiniMax M2.5, Claude API)
+- 8 built-in tools: web search, file ops, Spotify, Claude escalation
+- Image vision via MiniMax MCP
 
 Default config file:
 - macOS/Linux: `$HOME/bot.env`
